@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un Anno di Noi - Special Edition</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --romantic-red: #d6336c;
+            --soft-pink: #ffe4e6;
+            --paper-bg: #fffaf0; /* Color crema/carta */
+            --text-color: #3e2723;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Lora', serif;
+            background-color: #fce4ec;
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Sfondo animato */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, #fff5f7 0%, #ffe4e6 100%);
+        }
+
+        /* Floating Hearts Decor */
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: float-up var(--duration) linear infinite;
+        }
+
+        /* Container della dedica */
+        .wrapper {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* La "Lettera" o Pergamena */
+        .letter-scroll {
+            background: var(--paper-bg);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 25px;
+            border-radius: 2px;
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.1),
+                inset 0 0 50px rgba(139, 69, 19, 0.05);
+            position: relative;
+            border-left: 2px solid #f3e5ab;
+            border-right: 2px solid #f3e5ab;
+        }
+
+        .letter-scroll::before, .letter-scroll::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, #f3e5ab 0%, transparent 70%);
+        }
+        .letter-scroll::before { top: -10px; }
+        .letter-scroll::after { bottom: -10px; }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--romantic-red);
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+        }
+
+        .dates {
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: #8d6e63;
+            text-transform: uppercase;
+        }
+
+        /* Box citazione sistemato */
+        .quote-box {
+            background: rgba(214, 51, 108, 0.05);
+            border-left: 4px solid var(--romantic-red);
+            padding: 15px;
+            margin: 25px 0;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--romantic-red);
+            text-align: center;
+            transform: rotate(-1deg);
+        }
+
+        .letter-text p {
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            text-align: justify;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease-out;
+        }
+
+        .letter-text p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .bold { font-weight: 700; color: #000; }
+
+        /* Interattività finale */
+        .interaction-zone {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .magic-button {
+            background: var(--romantic-red);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(214, 51, 108, 0.4);
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .magic-button:active {
+            transform: scale(0.9);
+        }
+
+        #final-message {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border: 2px dashed var(--romantic-red);
+            border-radius: 15px;
+            background: white;
+            animation: popIn 0.5s forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            color: var(--romantic-red);
+            font-size: 1.5rem;
+        }
+
+        /* Supporto per cuori dell'interazione */
+        .confetti {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: var(--romantic-red);
+            clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
+            z-index: 1000;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="parallax-bg" id="bg"></div>
+
+    <div class="wrapper">
+        <div class="letter-scroll">
+            <header>
+                <h1>❤️ Un anno insieme ❤️</h1>
+                <div class="dates">01.02.2025 — 01.02.2026</div>
+            </header>
+
+            <div class="letter-text">
+                <p><strong>AUGURI A NOI!</strong><br>
+                ASPETTA, COSA??<br>
+                fermati un secondo, rileggi, rileggi una, due, tre volte, forse cento, a-auguri?????<br>
+                <span class="bold">È PASSATO UN ANNO????????????????</span></p>
+
+                <p>Io stento a crederci, ma ora avviene quella che è la mia parte preferita: il resoconto finale, tutto ciò che abbiamo "accocchiato" in un anno o poco meno, visto che per ricevere quel si benedetto ho dovuto aspettare anche le dieci di sera.</p>
+
+                <p>Partiamo proprio da quel primo febbraio 2025, un pesce d'aprile anticipatario? fortunatamente no, o sfortunatamente per me... visto tutti i tuoi capricci!!</p>
+                
+                <p>Di quel giorno non ho vividi ricordi, inciso nella mia memoria come un tatuaggio, però c'è quel viso che annuisce in seguito alla domanda da me posta:</p>
+
+                <div class="quote-box">
+                    &ldquo;Allora ci mettiamo insieme?&rdquo;
+                </div>
+
+                <p>Da quel giorno, tutt... no, in realtà nulla è cambiato, ci comportavamo alla stessa maniera anche il giorno prima, e quello prima ancora, e quello prima prima ancora, insomma, è da quando ci conosciamo che c'è quel non so ché, che nemmeno l'illustrissimo Franco Calone è mai riuscito a descrivere.</p>
+
+                <p>La nostra complicità, il nostro essere complementari, la coincidenza degli opposti diceva qualcuno, ma che poi tanto opposti io e te, proprio non siamo.</p>
+
+                <p>Ci siamo conosciuti, sapendo entrambi che all'altro mancava qualcosa, si percepiva, che oltre quella patina spessa e densa di sicurezza (mia) e menefreghismo (tuo) c'era un mondo, un mondo composto da palazzi senza fondamenta, alberi senza foglie, matematica senza numeri, era tutto fragile debole e tenuto su dalla speranza e dalla rassegnazione che prima o poi qualcosa sarebbe cambiato e finalmente, poi è tutto cambiato.</p>
+
+                <div class="divider">✿ ✿ ✿</div>
+
+                <p>Ritornando a noi, quel primo febbraio è stato solo l'inizio di quello che diventerà un sogno ad occhi aperti, la fine dell'arcobaleno, i mondi utopistici delle favole Disney, fin dall'inizio abbiamo capito che questa relazione non si sarebbe evoluta in una banale esperienza liceale.</p>
+                
+                <p>All'ora come ad oggi, infatti, ci promettiamo le stesse cose, ci facciamo le stesse coccole, ma soprattutto, sopra ogni cosa, ci amiamo ogni giorno sempre di più, ciclicamente l'amore incrementa, diventa più intimo e si rafforza, ci capiamo con un solo sguardo, che talvolta risulta essere uno scambio di parole, concetti, discorsi, uno scambio di idee o critiche su chiunque che tuttavia, ahimè confesso di non comprenderle, ma faccio finta di si solo per perdermi dentro quello sguardo verde così acceso per qualche istante.</p>
+
+                <p>Ne abbiamo passate tante, quella litigata distruttiva che ci aspettavamo e mai arrivata, le prime giornate intere insieme, le prime esperienze nuove insieme, la nostra prima volta a letto, con te per la prima volta ho vissuto, ho amato, ho capito come essere un buon fidanzato, non perfetto perché non regalo fiori, ma un fidanzato capace di reinventarsi e soprattutto di fare un passo indietro quando c'è ne bisogno.</p>
+
+                <p>Quest'anno è stato il migliore della mia vita, nonostante personalmente ci siano stati tanti alti e altrettanti bassi, ciò che ha fatto davvero la differenza è stata la consapevolezza che qualsiasi cosa io avrei dovuto affrontare l'avrei affrontata con te al mio fianco, pronta a supportarmi anche se significava isolarsi o uscire dalla zona di conforto.</p>
+
+                <div class="divider">♥</div>
+
+                <p>I ricordi di quest'anno sono indelebili: da quella terribile litigata di febbraio a quella giornata al sushi, da quella giornata interminabile a napoli, a quella meravigliosa giornata passata al mare, tutti questi momenti hanno un fattor comune, il tuo sorriso smagliante dopo ogni bacio, ogni momento in cui sapevi di essere felice tanto quanti lo ero io, ma soprattutto dopo ogni pranzo, dopo ogni zeppola e panzarotti, dopo gli infiniti panini mangiati e le pizze wrustel e patate.</p>
+                
+                <p>Non so se ti rendi conto davvero di cosa siamo stati capaci di costruire: una macchina perfetta e autonoma che non ha alcun tipo di difetto, a volte rallenta un pò, a volte si inceppa, (specifico, mai per colpa mia), ma non si ferma mai, l'amore che abbiamo costruito è perpetuo, capace di alimentare l'energia del nostro universo anche dopo quel "finché morte non ci separi".</p>
+
+                <p>Stare al tuo fianco in quest'anno mi ha permesso di capire quanto io avessi bisogno di te, se facessimo un paragone tra l'anno 2024-2025 e l'anno 2025-2026 c'è un abisso, un abisso di differenza, in senso letterale.</p>
+
+                <p>Se prima ero un piccolo granchietto sul fondo di un oceano infinitamente profondo, in preda al panico, scontroso e spaventato da tutti i cattivi predatori, ora sono un pesciolino, il tuo, libero di andare in superfice, sapendo che per quanto possano esistere pesci più grandi di me, avrò sempre una pesciolina che mi dirà sempre cosa fare e come farlo.</p>
+
+                <div class="divider">✿</div>
+
+                <p>Con te, dopo questa insulsa e terribilmente dolce metafora, come ai vecchi tempi, possiamo quindi evincere che è cambiato tutto, ho scoperto cosa significhi essere felici, appagati, essere sicuri di se, ho capito finalmente comte ottenere ciò che desidero, l'importanza dell'ambizione, la necessità di scegliere un sogno e perseguirlo, ma non da solo.</p>
+                
+                <p>Infatti seppur mi piaccia stare solo, io non riesco ad immaginarmi una vita senza te, ma che dico, un anno, un mese, una settimana, un giorno, un secondo (tranne per il Napoli) senza te non riesco proprio a concepirlo.</p> 
+                
+                <p>La consapevolezza più grande che ho acquisito in questo lungo e breve anno è che ho bisogno di una persona come te nella mia vita, anzi non una persona come te, io ho bisogno proprio di te, te che con quegli occhioni mi hai dato la speranza che anche i casi più disperati possono cambiare, possono ribaltarsi e finalmente vedere gli altri dall'alto.</p>
+                
+                <p>Ho bisogno di quel faccino carino e arrabbiato, ho bisogno di quella pancina che brontola ogni 20 minuti, ho bisogno che ti arrabbi per le mie pesantezze, per le mie ansie, ho bisogno che tu mi vada contro e che sia il mio nemico numero uno, ho bisogno di tutto quello che sei, ho bisogno che tu diventi la mia famiglia, la mia quotidianità il mio tutto, o forse, ripensandoci, a questo risultato già siamo inconsapevolmente arrivati.</p>
+
+                <p>Sei stata quello pezzo di puzzle mancante per completare quella felice e spensierata realtà di cui solo recentemente ho fatto scoperta, mi hai aperto gli occhi e ci hai fatto entrare dentro tutto quello che ho ritenuto per anni, o anzi per un decennio, impossibile.</p>
+
+                <p>Un anno è passato in fretta, sembra ieri che ero impanicato nel capire cosa dover fare, o dover dire per piacerti, per conquistarti. Senza di te io non sarei diventato il fidanzato perfetto che sono ora, o peggio, sarei uno come Perrotta o Mattia, senza di te io non sono niente, senza di te, non sono io.</p>
+
+                <p>Celentano diceva che l'emozione non ha voce, ed è vero, nonostante sia il mio talento scrivere lettere d'amore di pagine e pagine, oggi mentre le scrivo, l'emozione non mi permette di formulare un pensiero concreto, un pensiero che possa toccarti il cuore, e non è un alibi, credimi, tuttavia l'amore nei tuoi confronti oramai è tangibile, una massa che influenza le mie scelte, le mie idee, il mio parlare, il mio zittire, la realtà che ci circonda.</p>
+
+                <p>Basti pensare che appena si vede un cuore, una A, una M, un fiore, un pupazzo, un tramonto o un alba si pensa all'altro, ci si perde nel guardare le stelle non rendendosi conto che sono loro a guardare noi, osservando la luminosità dell'amore che ci circonda.</p>
+
+                <p>Sei stata la luce in fondo al tunnel, la scialuppa di salvataggio di una nave che lentamente imbaracava acqua, sei stata quella goccia di acqua nel deserto più profondo, io non so se tutto questo sia abbastanza, ma credimi anche se scrivessi milioni di parole, non ci sarà un concetto che possa esprimere l'importanza che hai tu nella mia vita.</p>
+
+                <p>Vivere con te, è diventato indispensabile, una boccata d'aria in una città piena di smog. Durante quest'anno abbiamo pianto, abbiamo riso, ci siamo supportarti a vicenda, e credimi che se questo è il trailer della mia vita futura, io farò di tutto, e dico di tutto per poter vivere l'intero film, e godermelo per tutta la vita.</p>
+
+                <p>A quasi dimenticavo, io credo sia arrivato il momento di dover rinnovare quel contratto, quel contratto che sanciva la durata della relazione, ed io se posso, suggerire, lo rinnoverei a vita.</p>
+
+                <div class="interaction-zone">
+                    <button class="magic-button" id="btn-renew">Rinnova a Vita ❤️</button>
+                    <div id="final-message">
+                        <h2 style="font-family: 'Dancing Script', cursive; color: var(--romantic-red);">Contratto Firmato col Cuore!</h2>
+                        <p style="margin-top: 10px; font-style: italic;">Ora sarò il tuo pesciolino a vita.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p style="margin: 30px 0; color: #8d6e63; font-size: 0.8rem;">Scorri per leggere tutto...</p>
+    </div>
+
+    <script>
+        // Effetto comparsa testi
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.letter-text p, .quote-box').forEach(el => observer.observe(el));
+
+        // Cuori fluttuanti nello sfondo
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'floating-element';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            const duration = Math.random() * 5 + 10;
+            heart.style.setProperty('--duration', duration + 's');
+            document.getElementById('bg').appendChild(heart);
+            
+            setTimeout(() => heart.remove(), duration * 1000);
+        }
+        setInterval(createHeart, 800);
+
+        // Interazione Bottone
+        const btn = document.getElementById('btn-renew');
+        const msg = document.getElementById('final-message');
+
+        btn.addEventListener('click', () => {
+            btn.style.display = 'none';
+            msg.style.display = 'block';
+            
+            // Esplosione di cuori
+            for(let i=0; i<30; i++) {
+                createConfetti();
+            }
+        });
+
+        function createConfetti() {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.style.left = '50%';
+            c.style.top = '80%';
+            const destX = (Math.random() - 0.5) * 300;
+            const destY = (Math.random() - 0.5) * 300 - 100;
+            
+            document.body.appendChild(c);
+            
+            c.animate([
+                { transform: 'translate(0,0) scale(1)', opacity: 1 },
+                { transform: `translate(${destX}px, ${destY}px) scale(0) rotate(360deg)`, opacity: 0 }
+            ], {
+                duration: 1500 + Math.random() * 1000,
+                easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+            }).onfinish = () => c.remove();
+        }
+    </script>
+</body>
+</html>
